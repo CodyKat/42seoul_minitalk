@@ -6,7 +6,7 @@
 /*   By: jaemjeon <jaemjeon@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 10:38:37 by jaemjeon          #+#    #+#             */
-/*   Updated: 2022/05/13 14:15:25 by jaemjeon         ###   ########.fr       */
+/*   Updated: 2022/05/13 15:35:29 by jaemjeon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ void	signal1_handler(int signo)
 		usleep(65);
 	}
 }
-
 
 void	processing(int server_pid, char sending_letter)
 {

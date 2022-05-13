@@ -6,7 +6,7 @@
 /*   By: jaemjeon <jaemjeon@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 21:06:24 by jaemjeon          #+#    #+#             */
-/*   Updated: 2022/05/13 03:49:50 by jaemjeon         ###   ########.fr       */
+/*   Updated: 2022/05/13 15:36:59 by jaemjeon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,23 +16,22 @@
 
 int	ft_printf(const char *format, ...);
 
-static char letter;
+static char	g_letter;
 
 void	signal1_handler(int signo, siginfo_t *info, void *secret)
 {
-	letter <<= 1;
+	g_letter <<= 1;
 	usleep(15);
 	kill(info->si_pid, SIGUSR1);
 }
 
 void	signal2_handler(int signo, siginfo_t *info, void *secret)
 {
-	letter <<= 1;
-	letter |= 0x1;
+	g_letter <<= 1;
+	g_letter |= 0x1;
 	usleep(15);
 	kill(info->si_pid, SIGUSR1);
 }
-
 
 void	set_signal_action(struct sigaction *action1, struct sigaction *action2)
 {
@@ -44,7 +43,7 @@ void	set_signal_action(struct sigaction *action1, struct sigaction *action2)
 	action2->sa_sigaction = signal2_handler;
 }
 
-int	main()
+int	main(void)
 {
 	struct sigaction	action1;
 	struct sigaction	action2;
@@ -54,7 +53,7 @@ int	main()
 	set_signal_action(&action1, &action2);
 	pid = getpid();
 	ft_printf("%d\n", pid);
-	letter = '\0';
+	g_letter = '\0';
 	count = 0;
 	while (1)
 	{
@@ -64,8 +63,8 @@ int	main()
 		count++;
 		if (count == 8)
 		{
-			write(1, &letter, 1);
-			letter = '\0';
+			write(1, &g_letter, 1);
+			g_letter = '\0';
 			count = 0;
 		}
 	}
