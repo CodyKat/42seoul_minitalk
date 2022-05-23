@@ -6,7 +6,7 @@
 /*   By: jaemjeon <jaemjeon@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 10:37:21 by jaemjeon          #+#    #+#             */
-/*   Updated: 2022/05/13 11:13:13 by jaemjeon         ###   ########.fr       */
+/*   Updated: 2022/05/24 01:19:39 by jaemjeon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	ft_error(void)
 	write(1, "Error\n", 6);
 	exit(1);
 }
-
+/*
 int	ft_strlen(char *str)
 {
 	int	len;
@@ -31,11 +31,15 @@ int	ft_strlen(char *str)
 	}
 	return (len);
 }
-
+*/
 int	ft_isdigit(char letter)
 {
 	if ('0' <= letter && letter <= '9')
 		return (1);
+	else if (letter == '\0')
+		return (0);
+	else
+		ft_error();
 	return (0);
 }
 

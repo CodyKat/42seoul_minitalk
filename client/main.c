@@ -6,7 +6,7 @@
 /*   By: jaemjeon <jaemjeon@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 10:38:37 by jaemjeon          #+#    #+#             */
-/*   Updated: 2022/05/23 23:59:04 by jaemjeon         ###   ########.fr       */
+/*   Updated: 2022/05/24 01:17:59 by jaemjeon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,30 +17,8 @@
 
 #define FLAG 0x80
 
-int		ft_strlen(char *str);
 int		ft_atoi(char *str);
-void	ft_error(void);
 void	check_error(int argc, int server_pid);
-
-char	*ft_get_string(char *string)
-{
-	char	*output;
-	int		len;
-	int		offset;
-
-	offset = 0;
-	len = ft_strlen(string);
-	output = (char *)malloc(sizeof(char) * (len + 1));
-	if (output == 0)
-		ft_error();
-	while (1)
-	{
-		output[offset] = string[offset];
-		if (output[offset] == '\0')
-			return (output);
-		offset++;
-	}
-}
 
 void	signal1_handler(int signo)
 {
@@ -67,6 +45,7 @@ void	processing(int server_pid, char sending_letter)
 		else
 			kill(server_pid, SIGUSR2);
 		signal(SIGUSR1, signal1_handler);
+		signal(SIGUSR2, signal1_handler);
 		pause();
 		usleep(35);
 		sending_letter <<= 1;
