@@ -6,7 +6,7 @@
 /*   By: jaemjeon <jaemjeon@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 10:38:37 by jaemjeon          #+#    #+#             */
-/*   Updated: 2022/05/13 15:35:29 by jaemjeon         ###   ########.fr       */
+/*   Updated: 2022/05/23 23:59:04 by jaemjeon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,12 @@ void	signal1_handler(int signo)
 {
 	static int	bit_count = 0;
 
+	signo = 0;
 	bit_count++;
 	if (bit_count == 8)
 	{
 		bit_count = 0;
-		usleep(65);
+		usleep(100);
 	}
 }
 
@@ -104,7 +105,6 @@ void	print_log(char sending_letter)
 int	main(int argc, char *argv[])
 {
 	int		server_pid;
-	int		pid;
 	char	*message;
 	char	sending_letter;
 	char	*end_message;

@@ -6,7 +6,7 @@
 /*   By: jaemjeon <jaemjeon@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 21:06:24 by jaemjeon          #+#    #+#             */
-/*   Updated: 2022/05/13 15:36:59 by jaemjeon         ###   ########.fr       */
+/*   Updated: 2022/05/23 23:58:41 by jaemjeon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,16 +20,20 @@ static char	g_letter;
 
 void	signal1_handler(int signo, siginfo_t *info, void *secret)
 {
+	signo = 0;
+	secret = 0;
 	g_letter <<= 1;
-	usleep(15);
+	usleep(30);
 	kill(info->si_pid, SIGUSR1);
 }
 
 void	signal2_handler(int signo, siginfo_t *info, void *secret)
 {
+	signo = 0;
+	secret = 0;
 	g_letter <<= 1;
 	g_letter |= 0x1;
-	usleep(15);
+	usleep(30);
 	kill(info->si_pid, SIGUSR1);
 }
 
