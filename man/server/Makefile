@@ -10,6 +10,9 @@ SRCS = main.c				\
 
 OBJS = ${SRCS:.c=.o}
 
+%.o:%.c
+	$(CC) $(IFLAGS) $(CFLAGS) -o $@ -c $<
+
 all : ${NAME}
 
 $(NAME) :

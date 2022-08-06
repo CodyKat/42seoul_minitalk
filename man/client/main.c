@@ -3,22 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaemjeon <jaemjeon@student.42seoul.>       +#+  +:+       +#+        */
+/*   By: jaemjeon <jaemjeon@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 10:38:37 by jaemjeon          #+#    #+#             */
-/*   Updated: 2022/05/24 01:17:59 by jaemjeon         ###   ########.fr       */
+/*   Updated: 2022/07/02 16:33:29 by jaemjeon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <stdlib.h>
 #include <signal.h>
 #include <unistd.h>
 
-#define FLAG 0x80
+#define MASK 0b10000000
 
 int		ft_atoi(char *str);
-void	check_error(int argc, int server_pid);
+void	ft_error(void);
+void	init_message_check_error(char **message, char **end_message, \
+										int argc, char **argv);
 
 void	signal1_handler(int signo)
 {
@@ -33,24 +33,46 @@ void	signal1_handler(int signo)
 	}
 }
 
-void	processing(int server_pid, char sending_letter)
+void	send_one_byte(int server_pid, char sending_letter)
 {
 	int	bit_count;
 
 	bit_count = 0;
 	while (bit_count++ < 8)
 	{
-		if ((sending_letter & FLAG) != FLAG)
-			kill(server_pid, SIGUSR1);
+		if ((sending_letter & MASK) != MASK)
+		{
+			if (kill(server_pid, SIGUSR1) == -1)
+				ft_error();
+		}
 		else
-			kill(server_pid, SIGUSR2);
-		signal(SIGUSR1, signal1_handler);
-		signal(SIGUSR2, signal1_handler);
+		{
+			if (kill(server_pid, SIGUSR2) == -1)
+				ft_error();
+		}
 		pause();
-		usleep(35);
+		usleep(50);
 		sending_letter <<= 1;
 	}
-	write(1, &sending_letter, 1);
+}
+
+void	print_one_byte(char sending_letter)
+{
+	char	*string_new_line;
+
+	write(1, "[ ", 2);
+	if (sending_letter == '\n')
+	{
+		string_new_line = "NEW_LINE";
+		while (*string_new_line)
+		{
+			write(1, string_new_line, 1);
+			string_new_line++;
+		}
+	}
+	else
+		write(1, &sending_letter, 1);
+	write(1, " send OK ]\n", 11);
 }
 
 void	print_log(char sending_letter)
@@ -60,7 +82,7 @@ void	print_log(char sending_letter)
 	int			offset;
 
 	offset = 0;
-	if ((sending_letter & FLAG) == 0)
+	if ((sending_letter & MASK) == 0)
 	{
 		if (utf_count > 0)
 		{
@@ -70,9 +92,8 @@ void	print_log(char sending_letter)
 			write(1, " send OK ]\n", 11);
 			utf_count = 0;
 		}
-		write(1, "[ ", 2);
-		write(1, &sending_letter, 1);
-		write(1, " send OK ]\n", 11);
+		else
+			print_one_byte(sending_letter);
 	}
 	else
 	{
@@ -88,21 +109,21 @@ int	main(int argc, char *argv[])
 	char	sending_letter;
 	char	*end_message;
 
-	end_message = "FINISH!!";
+	signal(SIGUSR1, signal1_handler);
+	signal(SIGUSR2, signal1_handler);
+	init_message_check_error(&message, &end_message, argc, argv);
 	server_pid = ft_atoi(argv[1]);
-	check_error(argc, server_pid);
-	message = argv[2];
 	while (*message)
 	{
 		sending_letter = *message;
-		processing(server_pid, sending_letter);
+		send_one_byte(server_pid, sending_letter);
 		print_log(sending_letter);
 		message++;
 	}
 	while (*end_message)
 	{
 		sending_letter = *end_message;
-		processing(server_pid, sending_letter);
+		send_one_byte(server_pid, sending_letter);
 		print_log(sending_letter);
 		end_message++;
 	}

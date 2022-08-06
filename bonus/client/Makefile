@@ -1,16 +1,21 @@
 CC = cc
 NAME = client
 CFLAGS = -Wall -Wextra -Werror
-SRCS = main.c	\
-	   util.c	\
+SRCS = main_bonus.c	\
+	   util_bonus.c	\
 
 OBJS = ${SRCS:.c=.o}
+
+%.o:%.c
+	${CC} ${CFLAGS} -o $@ -c $<
 
 all : ${NAME}
 
 $(NAME) : ${OBJS}
 	${CC} -o ${NAME} ${CFLAG} ${SRCS}
 
+bonus :
+	${NAME}
 
 clean :
 	rm -f ${OBJS}

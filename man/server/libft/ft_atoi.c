@@ -1,42 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   util.c                                             :+:      :+:    :+:   */
+/*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jaemjeon <jaemjeon@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/13 10:37:21 by jaemjeon          #+#    #+#             */
-/*   Updated: 2022/06/19 20:35:29 by jaemjeon         ###   ########.fr       */
+/*   Created: 2022/03/07 19:03:53 by jaemjeon          #+#    #+#             */
+/*   Updated: 2022/03/12 18:22:33 by jaemjeon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include <stdlib.h>
+#include "libft.h"
 
-void	ft_error(void)
+static int	is_space(const char *c)
 {
-	write(1, "Error\n", 6);
-	exit(1);
-}
-
-int	ft_isdigit(char letter)
-{
-	if ('0' <= letter && letter <= '9')
+	if ((9 <= *c && *c <= 13) || *c == ' ')
 		return (1);
-	else if (letter == '\0')
-		return (0);
-	else
-		ft_error();
 	return (0);
 }
 
-int	ft_atoi(char *str)
+int	ft_atoi(const char *str)
 {
 	int		result;
 	int		sign;
+	char	*digit_ptr;
 
 	result = 0;
 	sign = 1;
+	while (is_space(str))
+	{
+		str++;
+	}
 	if (*str == '+')
 		str++;
 	else if (*str == '-')
@@ -44,19 +38,12 @@ int	ft_atoi(char *str)
 		str++;
 		sign *= -1;
 	}
-	while (ft_isdigit(*str))
+	digit_ptr = (char *)str;
+	while (ft_isdigit(*digit_ptr))
 	{
 		result *= 10;
-		result += (*str - '0');
-		str++;
+		result += (*digit_ptr - '0');
+		digit_ptr++;
 	}
 	return (result * sign);
-}
-
-void	check_error(int argc, int server_pid)
-{
-	if (argc != 3)
-		ft_error();
-	if (100 >= server_pid || server_pid > 99999)
-		ft_error();
 }
