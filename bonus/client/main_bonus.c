@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaemjeon <jaemjeon@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: jaemjeon <jaemjeon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/13 10:38:37 by jaemjeon          #+#    #+#             */
-/*   Updated: 2022/07/02 12:27:07 by jaemjeon         ###   ########.fr       */
+/*   Updated: 2022/08/08 22:06:26 by jaemjeon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ void	signal1_handler(int signo)
 {
 	static int	bit_count = 0;
 
-	signo = 0;
+	if (!(signo == SIGUSR1 || signo == SIGUSR2))
+		return ;
 	bit_count++;
 	if (bit_count == 8)
 	{

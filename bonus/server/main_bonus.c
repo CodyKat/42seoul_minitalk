@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jaemjeon <jaemjeon@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: jaemjeon <jaemjeon@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 21:06:24 by jaemjeon          #+#    #+#             */
-/*   Updated: 2022/07/04 12:49:58 by jaemjeon         ###   ########.fr       */
+/*   Updated: 2022/08/08 22:03:25 by jaemjeon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static char	g_letter;
 
 void	signal1_handler(int signo, siginfo_t *info, void *secret)
 {
-	secret = 0;
+	secret++;
 	g_letter <<= 1;
 	usleep(30);
 	kill(info->si_pid, signo);
@@ -27,7 +27,7 @@ void	signal1_handler(int signo, siginfo_t *info, void *secret)
 
 void	signal2_handler(int signo, siginfo_t *info, void *secret)
 {
-	secret = 0;
+	secret++;
 	g_letter <<= 1;
 	g_letter |= 0x1;
 	usleep(30);
